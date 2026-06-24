@@ -5,21 +5,14 @@ from typing import List, Dict, Any
 
 import psycopg2
 import psycopg2.extras
-import streamlit as st
+import os
 
+def get_database_url():
+    url = os.getenv("DATABASE_URL")
 
-def get_database_url() -> str:
-    """Read the Supabase Postgres connection string from Streamlit secrets or env."""
-    url = None
-    try:
-        url = st.secrets.get("DATABASE_URL")
-    except Exception:
-        url = None
-    url = url or os.getenv("DATABASE_URL")
     if not url:
-        raise RuntimeError(
-            "DATABASE_URL is missing. Add it in Streamlit Secrets or .streamlit/secrets.toml."
-        )
+        raise RuntimeError("DATABASE_URL is missing")
+
     return url
 
 
